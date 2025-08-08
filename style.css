@@ -1,0 +1,93 @@
+body {
+    background-image: url('background.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    font-family: 'Lora', serif;
+    color: #f0f0f0;
+}
+
+.navbar-brand, h1, h2, h3, h4, h5 {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+}
+
+.bg-dark-transparent {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #212529;
+    border: 1px solid #444;
+}
+
+.modal-header, .modal-footer {
+    border-bottom: 1px solid #444;
+    border-top: 1px solid #444;
+}
+
+.btn-close {
+    filter: invert(1);
+}
+
+.card {
+    background-color: rgba(33, 37, 41, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.2);
+}
+
+.card-title {
+    color: #ffd700; /* Gold */
+}
+
+.card-img-top {
+    background-color: #f0f0f0;
+    padding: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#sigil-canvas {
+    background-color: #fff;
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.progress-bar {
+    transition: width 0.5s ease-in-out;
+}
+
+#consecration-sigil, #maintain-sigil {
+    transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+#consecration-sigil.charging, #maintain-sigil.charging {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px #0dcaf0;
+}
+
+#destroy-sigil.dissolving {
+    transition: opacity 2s ease-out, filter 2s ease-out;
+    opacity: 0;
+    filter: blur(15px);
+    cursor: default !important;
+}
+
+#destroy-animation-container > * {
+    transition: opacity 2s ease-out, filter 2s ease-out;
+}
+
+#destroy-animation-container > .dissolving {
+    opacity: 0;
+    filter: blur(15px);
+    cursor: default !important;
+}
+
+#destroy-animation-container {
+    cursor: pointer;
+}

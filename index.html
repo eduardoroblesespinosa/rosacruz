@@ -1,0 +1,205 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Egrégores Rosacruz</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark-transparent">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="rose_cross_logo.png" alt="Logo Rosacruz" width="30" height="30" class="d-inline-block align-top me-2">
+                Gestor de Egrégores
+            </a>
+        </div>
+    </nav>
+
+    <main class="container mt-4">
+        <div class="p-5 mb-4 rounded-3 shadow-lg text-center bg-dark-transparent text-white">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Bienvenido, Adepto</h1>
+                <p class="fs-4">Esta herramienta te guiará en la creación, mantenimiento y disolución de Egrégores, siguiendo los principios de la Fraternidad Rosacruz. Un Egregor es una entidad psíquica generada por el pensamiento colectivo y la voluntad enfocada.</p>
+                <button class="btn btn-primary btn-lg" type="button" data-bs-toggle="modal" data-bs-target="#create-modal" id="start-creation-btn">
+                    <i class="fas fa-plus-circle me-2"></i>Crear Nuevo Egregor
+                </button>
+            </div>
+        </div>
+
+        <h2 class="text-center text-white mb-4">Mis Egrégores</h2>
+        <div id="egregores-list" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <!-- Los egrégores se cargarán aquí -->
+            <div id="no-egregores-message" class="col-12 text-center text-white-50">
+                <p>No has creado ningún Egregor aún. Haz clic en "Crear Nuevo Egregor" para comenzar.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Creación -->
+    <div class="modal fade" id="create-modal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content text-white">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createModalLabel">Creación de un Egregor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Step 1: Definición -->
+                    <div id="create-step-1">
+                        <h4>Paso 1: Definición</h4>
+                        <p>Define claramente el Nombre y el Propósito de tu Egregor. Sé específico y conciso.</p>
+                        <form id="form-step-1">
+                            <div class="mb-3">
+                                <label for="egregor-name" class="form-label">Nombre del Egregor:</label>
+                                <input type="text" class="form-control" id="egregor-name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="egregor-purpose" class="form-label">Propósito del Egregor:</label>
+                                <textarea class="form-control" id="egregor-purpose" rows="3" required></textarea>
+                            </div>
+                            <button type="button" class="btn btn-primary" id="goto-step-2">Siguiente: Símbolo</button>
+                        </form>
+                    </div>
+
+                    <!-- Step 2: Símbolo -->
+                    <div id="create-step-2" class="d-none text-center">
+                        <h4>Paso 2: Creación del Símbolo</h4>
+                        <p>Elige o crea el sigilo que representará a tu Egregor. Este será tu foco visual.</p>
+
+                        <ul class="nav nav-tabs" id="symbol-method-tabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="draw-tab" data-bs-toggle="tab" data-bs-target="#draw-tab-pane" type="button" role="tab" aria-controls="draw-tab-pane" aria-selected="true">Dibujar Sigilo</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="upload-image-tab" data-bs-toggle="tab" data-bs-target="#upload-image-tab-pane" type="button" role="tab" aria-controls="upload-image-tab-pane" aria-selected="false">Cargar Imagen</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="upload-video-tab" data-bs-toggle="tab" data-bs-target="#upload-video-tab-pane" type="button" role="tab" aria-controls="upload-video-tab-pane" aria-selected="false">Usar Video</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content mt-3" id="symbol-method-content">
+                            <!-- Draw Pane -->
+                            <div class="tab-pane fade show active" id="draw-tab-pane" role="tabpanel" aria-labelledby="draw-tab" tabindex="0">
+                                <canvas id="sigil-canvas" class="border" width="400" height="300"></canvas>
+                                <div class="mt-2">
+                                     <button type="button" class="btn btn-secondary" id="clear-canvas-btn">Limpiar</button>
+                                </div>
+                            </div>
+                    
+                            <!-- Image Upload Pane -->
+                            <div class="tab-pane fade" id="upload-image-tab-pane" role="tabpanel" aria-labelledby="upload-image-tab" tabindex="0">
+                                <div class="mb-3">
+                                    <label for="image-upload-input" class="form-label">Selecciona una imagen de tu equipo:</label>
+                                    <input class="form-control" type="file" id="image-upload-input" accept="image/*">
+                                </div>
+                                <img id="image-preview" src="" class="d-none" style="max-width: 400px; max-height: 300px; border: 1px solid #ccc;"/>
+                            </div>
+                    
+                            <!-- Video Upload Pane -->
+                            <div class="tab-pane fade" id="upload-video-tab-pane" role="tabpanel" aria-labelledby="upload-video-tab" tabindex="0">
+                                <div class="mb-3">
+                                    <label for="video-upload-input" class="form-label">Carga un video desde tu equipo:</label>
+                                    <input class="form-control" type="file" id="video-upload-input" accept="video/*">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="video-url-input" class="form-label">O pega la URL de un video:</label>
+                                    <input type="url" class="form-control" id="video-url-input" placeholder="https://example.com/video.mp4">
+                                </div>
+                                <video id="video-preview" controls muted class="d-none" style="max-width: 400px; max-height: 300px; border: 1px solid #ccc;"></video>
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                             <button type="button" class="btn btn-primary" id="goto-step-3">Siguiente: Consagración</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Consagración -->
+                    <div id="create-step-3" class="d-none text-center">
+                        <h4>Paso 3: Consagración</h4>
+                        <p>Concéntrate en el símbolo y el propósito. Pulsa y mantén el botón para cargar el Egregor con tu energía psíquica. El ritual durará 15 segundos.</p>
+                        <div id="consecration-preview-container" class="mb-3">
+                            <!-- Preview will be inserted here by JS -->
+                        </div>
+                        <div class="progress mb-3">
+                            <div id="charge-progress" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <button type="button" class="btn btn-lg btn-success" id="charge-btn">Mantener para Cargar</button>
+                        <div id="ritual-feedback" class="mt-3 d-none">
+                            <p class="text-success">¡Consagración Completa!</p>
+                            <button class="btn btn-primary" id="finish-creation-btn" data-bs-dismiss="modal">Finalizar Creación</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Mantenimiento -->
+    <div class="modal fade" id="maintain-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Mantenimiento del Egregor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <h4 id="maintain-name"></h4>
+                    <div id="maintain-sigil-container" class="mb-3">
+                         <!-- Sigil image or video will be injected here -->
+                    </div>
+                    <p>Realiza el ritual de mantenimiento para fortalecer tu Egregor. Concéntrate y canaliza tu energía durante 10 segundos.</p>
+                     <div class="progress mb-3">
+                        <div id="maintain-progress" class="progress-bar bg-info" role="progressbar" style="width: 0%;"></div>
+                    </div>
+                    <button type="button" class="btn btn-lg btn-info" id="maintain-charge-btn">Mantener para Fortalecer</button>
+                     <div id="maintain-feedback" class="mt-3 d-none">
+                        <p class="text-info">¡Mantenimiento Completo!</p>
+                        <button class="btn btn-primary" data-bs-dismiss="modal">Finalizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Destrucción -->
+    <div class="modal fade" id="destroy-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Disolución del Egregor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="destroy-step-1">
+                        <h4 class="text-danger">¡Atención!</h4>
+                        <p>Estás a punto de disolver permanentemente al Egregor <strong id="destroy-name"></strong>. Este acto es irreversible. Retirarás tu energía y liberarás su forma de pensamiento.</p>
+                        <p>Para confirmar, escribe <strong class="text-danger">DISOLVER</strong> en el campo de abajo.</p>
+                        <input type="text" class="form-control" id="destroy-confirm-input" placeholder="Escribe aquí para confirmar">
+                        <button type="button" class="btn btn-danger mt-3" id="goto-destroy-step-2" disabled>Confirmar Disolución</button>
+                    </div>
+                    <div id="destroy-step-2" class="d-none text-center">
+                        <h4>Ritual de Disolución</h4>
+                        <p>Visualiza el símbolo deshaciéndose mientras el Egregor se disuelve pacíficamente, su propósito cumplido. Haz clic en el símbolo para completar el ritual.</p>
+                        <div id="destroy-animation-container" class="position-relative d-inline-block">
+                             <!-- Sigil image or video will be injected here -->
+                        </div>
+                        <p id="destroy-feedback" class="mt-3 d-none text-success">El Egregor ha sido disuelto.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script> <!-- Placeholder for potential icons -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
